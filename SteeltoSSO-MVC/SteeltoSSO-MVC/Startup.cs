@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Steeltoe.Extensions.Configuration;
+using Steeltoe.Security.Authentication.CloudFoundry;
+using Microsoft.AspNetCore.Http;
 
 namespace SteeltoeSSO
 {
@@ -43,6 +45,10 @@ namespace SteeltoeSSO
 
             services.AddAuthentication(
                 SharedOptions => SharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Add Cloud Foundry authentication service
+            services.AddCloudFoundryAuthentication(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,13 +71,18 @@ namespace SteeltoeSSO
 
             app.UseCookieAuthentication();
 
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            //{
+            //    ClientId = Configuration["Authentication:AzureAd:ClientId"],
+            //    ClientSecret = Configuration["Authentication:AzureAd:ClientSecret"],
+            //    Authority = Configuration["Authentication:AzureAd:AADInstance"] + Configuration["Authentication:AzureAd:TenantId"],
+            //    CallbackPath = Configuration["Authentication:AzureAd:CallbackPath"],
+            //    ResponseType = OpenIdConnectResponseType.CodeIdToken
+            //});
+            // Add Cloud Foundry middleware to pipeline
+            app.UseCloudFoundryAuthentication(new CloudFoundryOptions()
             {
-                ClientId = Configuration["Authentication:AzureAd:ClientId"],
-                ClientSecret = Configuration["Authentication:AzureAd:ClientSecret"],
-                Authority = Configuration["Authentication:AzureAd:AADInstance"] + Configuration["Authentication:AzureAd:TenantId"],
-                CallbackPath = Configuration["Authentication:AzureAd:CallbackPath"],
-                ResponseType = OpenIdConnectResponseType.CodeIdToken
+                AccessDeniedPath = new PathString("/Home/AccessDenied")
             });
 
             app.UseMvc(routes =>
