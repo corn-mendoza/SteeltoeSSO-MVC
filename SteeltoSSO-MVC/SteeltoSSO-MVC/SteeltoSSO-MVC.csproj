@@ -12,6 +12,7 @@
     <UserSecretsId>aspnet-SteeltoSSO_MVC-91fa85da-fb46-4e9b-8e59-5a1c01b41403</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>1</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>SteeltoeSSO</RootNamespace>
+    <AssemblyName>SteeltoSSO</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
