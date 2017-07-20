@@ -82,7 +82,7 @@ namespace SteeltoeSSO
             // Add Cloud Foundry middleware to pipeline
             app.UseCloudFoundryAuthentication(new CloudFoundryOptions()
             {
-                AccessDeniedPath = new PathString("/Home/AccessDenied")
+                AccessDeniedPath = new PathString("/Account/AccessDenied")
             });
 
             app.UseMvc(routes =>
